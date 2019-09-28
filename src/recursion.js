@@ -378,4 +378,12 @@ var mergeSort = function(array) {
 // console.log(obj2); // {a:1,b:{bb:{bbb:2}},c:3}
 // obj1 === obj2 // false
 var clone = function(input) {
+  if (Array.isArray(input)) {return input.map(element => clone(element));}
+  if (typeof input === 'object') {
+    return Object.keys(input).reduce((cloned, key) => {
+      cloned[key] = clone(input[key]);
+      return cloned;
+    }, {});
+  }
+  return input;
 };

@@ -339,14 +339,21 @@ var tagCount = function(tag, node) {
 // var array = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 // binarySearch(array, 5) // 5
 // https://www.khanacademy.org/computing/computer-science/algorithms/binary-search/a/binary-search
-var binarySearch = function(array, target, min, max) {
-  min = min || 0;
-  max = max === undefined ? array.length - 1 : max;
-  if (min > max) {return null;}
-  var mid = Math.floor((min + max) / 2);
-  if (array[mid] < target) {return binarySearch(array, target, mid + 1, max);}
-  if (array[mid] > target) {return binarySearch(array, target, min, mid - 1);}
-  return mid;
+var binarySearch = function(array, target) {
+  var len = array.length - 1;
+  if (len < 0) {return null;}
+  var mid = Math.floor(len / 2);
+  var recursiveResult;
+  var recursiveLeftIndex = 0;
+  if (array[mid] < target) {
+    recursiveLeftIndex = mid + 1;
+    recursiveResult = binarySearch(array.slice(recursiveLeftIndex), target);
+  } else if (target < array[mid]) {
+    recursiveResult = binarySearch(array.slice(0, mid), target);
+  } else {
+    return mid;
+  }
+  return recursiveResult === null ? null : recursiveLeftIndex + recursiveResult;
 };
 
 // 39. Write a merge sort function.

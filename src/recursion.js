@@ -8,23 +8,20 @@
 // factorial(5); // 120
 var factorial = function(n) {
   if (n < 0) {return null;}
-  if (n === 0) {return 1;}
-  return n * factorial(n - 1);
+  return n ? n * factorial(n - 1) : 1;
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
-  return array.length === 0 ? 0 : array[0] + sum(array.slice(1));
+  return array.length ? array[0] + sum(array.slice(1)) : 0;
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
-  if (array.length === 0) {return 0;}
-  var first = array[0];
-  var rest = array.slice(1);
-  return (Array.isArray(first) ? arraySum(first) : first) + arraySum(rest);
+  if (!Array.isArray(array)) {return array;}
+  return array.length ? arraySum(array[0]) + arraySum(array.slice(1)) : 0;
 };
 
 // 4. Check if a number is even.
@@ -45,8 +42,7 @@ var sumBelow = function(n) {
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
   if (x > y) {return range(y, x).reverse()}
-  if (y - x <= 1) {return [];}
-  return [x + 1, ...range(x + 1, y)];
+  return y - x <= 1 ? [] : [x + 1, ...range(x + 1, y)];
 };
 
 // 7. Compute the exponent of a number.
@@ -77,8 +73,7 @@ var powerOfTwo = function(n) {
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
-  if (string.length === 0) {return '';}
-  return reverse(string.slice(1)) + string[0];
+  return string.length ? reverse(string.slice(1)) + string[0] : '';
 };
 
 // 10. Write a function that determines if a string is a palindrome.
@@ -97,8 +92,7 @@ var modulo = function(x, y) {
   if (y === 0) {return NaN;}
   if (y < 0) {return modulo(x, -y);}
   if (x < 0) {return -modulo(-x, y);}
-  if (x < y) {return x;}
-  return modulo(x - y, y);
+  return x < y ? x : modulo(x - y, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
@@ -106,8 +100,7 @@ var modulo = function(x, y) {
 var multiply = function(x, y) {
   if (x === 0 || y === 0) {return 0;}
   if (y < 0) {return multiply(-x, -y);}
-  if (y === 1) {return x;}
-  return x + multiply(x, y - 1);
+  return y === 1 ? x : x + multiply(x, y - 1);
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
@@ -116,8 +109,7 @@ var divide = function(x, y) {
   if (y === 0) {return NaN;}
   if (y < 0) {return -divide(x, -y);}
   if (x < 0) {return -divide(-x, y);}
-  if (x < y) {return 0;}
-  return 1 + divide(x - y, y);
+  return x < y ? 0 : 1 + divide(x - y, y);
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -144,7 +136,7 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
-  return str.length === 0 ? [] : [str[0], ...createArray(str.slice(1))];
+  return str.length ? [str[0], ...createArray(str.slice(1))] : [];
 };
 
 // 17. Reverse the order of an array
@@ -156,7 +148,7 @@ var reverseArr = function(array) {
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
-  return length > 0 ? [value, ...buildList(value, length - 1)] : [];
+  return length ? [value, ...buildList(value, length - 1)] : [];
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -165,7 +157,7 @@ var buildList = function(value, length) {
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
 var fizzBuzz = function(n) {
-  return n ? [...fizzBuzz(n - 1), `${n % 3 ? '' : 'Fizz'}${n % 5 ? '' : 'Buzz'}` || n.toString()] : [];
+  return n ? [...fizzBuzz(n - 1), `${n % 3 ? '' : 'Fizz'}${n % 5 ? '' : 'Buzz'}` || `${n}`] : [];
 };
 
 // 20. Count the occurence of a value in a list.
@@ -200,7 +192,7 @@ var countKeysInObj = function(obj, key) {
 var countValuesInObj = function(obj, value) {
   let count = 0;
   for (let k in obj) {
-    count += obj[k].constructor === Object ? countValuesInObj(obj[k], value) : obj[k] === value;
+    count += typeof obj[k] === 'object' ? countValuesInObj(obj[k], value) : obj[k] === value;
   }
   return count;
 };
